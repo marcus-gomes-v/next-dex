@@ -1,10 +1,10 @@
 "use client";
 
-import Swap from "@/components/Swap";
+import Tokens from "@/components/Tokens";
 import { useWallet } from "@/components/providers/WalletProvider";
 
 export default function Home() {
   const { address, isConnected } = useWallet();
   
-  return <Swap isConnected={isConnected} address={address} />;
+  return <Tokens isConnected={isConnected} address={address} />;
 }

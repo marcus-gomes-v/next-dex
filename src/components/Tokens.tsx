@@ -1,6 +1,7 @@
 import React from 'react'
 
-function Tokens() {
+function Tokens(props: { address: string; isConnected: boolean; }) {
+  console.log(props);
   return (
     <div>Tokens</div>
   )
