@@ -22,7 +22,7 @@ export default function Portfolio({ address, isConnected }: { address: string; i
     async function fetchPortfolio() {
       if (!isConnected || !address) return;
       try {
-        const response = await axios.post('/api/moralis/portfolio', {
+        const response = await axios.post('/api/coingecko/portfolio', {
           address,
           chain: '0x1'
         });
@@ -72,12 +72,12 @@ export default function Portfolio({ address, isConnected }: { address: string; i
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-300">
                     Balance
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-300">
+                  {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-300">
                     Price
                   </th>
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-300">
                     Value
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -103,12 +103,12 @@ export default function Portfolio({ address, isConnected }: { address: string; i
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-300">
                       {parseFloat(token.balance).toFixed(4)}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-300">
+                    {/* <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-300">
                       ${token.price?.toFixed(2) || '0.00'}
                     </td>
                     <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-300">
                       ${(parseFloat(token.balance) * (token.price || 0)).toFixed(2)}
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         port: "", // Leave empty if no port is used
         pathname: "/**", // Adjust the path based on the pattern you need
       },
+      {
+        protocol: "https",
+        hostname: "static.alchemyapi.io",
+        port: "", // Leave empty if no port is used
+        pathname: "/**", // Adjust the path based on the pattern you need
+      },
     ],
   },
 };
