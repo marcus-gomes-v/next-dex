@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     const tokens = await Moralis.EvmApi.token.getWalletTokenBalances({
       address,
-      chain: chain as any,
+      chain: chain,
     });
 
     const tokenData = await Promise.all(
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         try {
           const price = await Moralis.EvmApi.token.getTokenPrice({
             address: token.token_address,
-            chain: chain as any,
+            chain: chain,
           });
           return { ...token, price: price.raw.usdPrice };
         } catch {

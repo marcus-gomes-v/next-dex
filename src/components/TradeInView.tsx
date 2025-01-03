@@ -1,7 +1,20 @@
 import { useEffect, useRef } from 'react';
 
-const TradingViewWidget = ({ tokenOne, tokenTwo }) => {
-  const container = useRef();
+declare global {
+  interface Window {
+    TradingView: {
+      widget: new (options: Record<string, unknown>) => void;
+    };
+  }
+}
+
+const TradingViewWidget = ({ tokenOne, tokenTwo }: {
+  tokenOne: { ticker: string };
+  tokenTwo: { ticker: string };
+}) => {
+  const container = useRef<HTMLDivElement>(null);
+
+  console.log(tokenTwo);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -9,7 +22,9 @@ const TradingViewWidget = ({ tokenOne, tokenTwo }) => {
     script.async = true;
     script.onload = () => {
       if (window.TradingView) {
-        container.current.innerHTML = '';
+        if (container.current) {
+          container.current.innerHTML = '';
+        }
         new window.TradingView.widget({
           container_id: 'tv-widget',
           symbol: `CRYPTO:${tokenOne.ticker}USD`,
@@ -32,7 +47,9 @@ const TradingViewWidget = ({ tokenOne, tokenTwo }) => {
         });
       }
     };
-    container.current.appendChild(script);
+    if (container.current) {
+      container.current.appendChild(script);
+    }
     
     return () => {
       if (container.current) {

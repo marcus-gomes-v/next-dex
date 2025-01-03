@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch token prices", details: error?.message || "Unknown error" },
+      { error: "Failed to fetch token prices" },
       { status: 500 }
     );
   }

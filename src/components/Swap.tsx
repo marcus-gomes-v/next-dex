@@ -1,5 +1,5 @@
 import '@ant-design/v5-patch-for-react-19';
-import { Popover, Radio, Modal, message, RadioChangeEvent, Spin } from "antd";
+import { Popover, Radio, Modal, message, RadioChangeEvent } from "antd";
 import tokenList from "../tokenList.json";
 import axios from "axios";
 import { useSendTransaction, useWaitForTransaction } from "wagmi";
@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faCog, faSort } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image';
 import TradingViewWidget from './TradeInView';
+import SwapNotification from '@/components/SwapLoadingNotification';
 
 function Swap(props: { address: string; isConnected: boolean; }) {
   const { address, isConnected } = props;
@@ -21,6 +22,7 @@ function Swap(props: { address: string; isConnected: boolean; }) {
   const [changeToken, setChangeToken] = useState(1);
   const [prices, setPrices] = useState<{ ratio: number } | null>(null);
   const [isSwapLoading, setIsSwapLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [txDetails, setTxDetails] = useState({
     to:null,
     data: null,
@@ -88,7 +90,7 @@ function Swap(props: { address: string; isConnected: boolean; }) {
       const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: '/api/moralis/token/price',
+        url: '/api/coingecko/token/price',
         headers: { 
           'Content-Type': 'application/json'
         },
@@ -173,7 +175,7 @@ function Swap(props: { address: string; isConnected: boolean; }) {
       if(txDetails.to && isConnected){
         sendTransaction();
       }
-  }, [txDetails])
+  }, [isConnected, sendTransaction, txDetails])
 
   useEffect(()=>{
 
@@ -188,6 +190,18 @@ function Swap(props: { address: string; isConnected: boolean; }) {
     }    
 
   },[isLoading])
+
+  useEffect(() => {
+    if (isLoading) {
+      setIsSwapLoading(true);
+    } else {
+      if (!isSuccess && txDetails.to) {
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+      }
+      setIsSwapLoading(false);
+    }
+  }, [isLoading, isSuccess, txDetails.to]); 
 
   useEffect(()=>{
     messageApi.destroy();
@@ -298,25 +312,15 @@ function Swap(props: { address: string; isConnected: boolean; }) {
   return (
     <>
       {contextHolder}
-      <Modal
-        open={isSwapLoading}
-        footer={null}
-        closable={false}
-        centered
-        width={200}
-        style={{ 
-          display: 'absolute',
-          padding: '24px',
-          background: '#0E111B',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '12px',
-          top: '10%',
-        }}
-      >
-        <Spin size="large" />
-        <div className="text-white mt-4">Processing Swap...</div>
-      </Modal>
+      <SwapNotification 
+        show={isSwapLoading} 
+        type="loading" 
+      />
+      <SwapNotification 
+        show={showError} 
+        type="error" 
+        message="Transaction rejected by user"
+      />
       <Modal
         open={isOpen}
         footer={null}
