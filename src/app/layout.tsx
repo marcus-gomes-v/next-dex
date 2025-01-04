@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DEX App",
-  description: "Decentralized Exchange Application",
+  title: "NUffle DEX",
+  description: "The Nuffle Decentralized Exchange",
 };
 
 export default function RootLayout({
