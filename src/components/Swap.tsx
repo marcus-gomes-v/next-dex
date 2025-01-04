@@ -309,6 +309,29 @@ function Swap(props: { address: string; isConnected: boolean; }) {
     margin-left-[5px]
   `
 
+  const classNameSwapButton = `
+    flex 
+    justify-center 
+    items-center 
+    bg-[#243056] 
+    w-full 
+    h-[55px] 
+    text-[20px] 
+    rounded-[12px] 
+    text-[#5981F3] 
+    font-bold 
+    transition 
+    duration-300 
+    mb-[30px] 
+    mt-[8px] 
+    hover:cursor-pointer 
+    hover:bg-[#3b4874] 
+    disabled:opacity-40 
+    disabled:cursor-not-allowed 
+    disabled:bg-[#243056] 
+    disabled:text-[#5982f39b]
+  `
+
   return (
     <>
       {contextHolder}
@@ -371,11 +394,11 @@ function Swap(props: { address: string; isConnected: boolean; }) {
             <FontAwesomeIcon icon={faCog} className="text-[#747b92] hover:text-white transition-all cursor-pointer" />
           </Popover>
         </div>
-        <div className='flex gap-4 w-full'>
-          <div className='relative mt-2 py-2 w-[70%]'>
+        <div className='flex flex-col  md:flex-row  gap-4 w-full'>
+          <div className='relative mt-2 py-2 w-full md:w-[70%]'>
             <TradingViewWidget tokenOne={tokenOne} tokenTwo={tokenTwo} />
           </div>
-          <div className='w-[30%]'>
+          <div className='w-full md:w-[30%]'>
             <div className="relative mt-6">
               <input
                 placeholder="0"
@@ -406,7 +429,7 @@ function Swap(props: { address: string; isConnected: boolean; }) {
                 <FontAwesomeIcon icon={faAngleDown} />
               </div>
             </div>
-            <button className="swapButton" disabled={!tokenOneAmount || !isConnected} onClick={fetchDexSwap}>Swap</button>
+            <button className={classNameSwapButton} disabled={!tokenOneAmount || !isConnected} onClick={fetchDexSwap}>Swap</button>
           </div>
         </div>
       </div>
