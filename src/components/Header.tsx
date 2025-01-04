@@ -101,6 +101,40 @@ function Header() {
               {link.name}
             </Popover.Button>
           ))}
+          {!isConnected ? (
+            <div
+              className="ml-2 inline-flex items-center rounded-md bg-indigo-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer"
+              onClick={connect}
+            >
+              Connect Wallet
+            </div>
+          ) : (
+            <Menu as="div" className="relative ml-5 shrink-0">
+              <MenuButton className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer">
+                {`${address.slice(0, 4)}...${address.slice(-4)}`}
+              </MenuButton>
+              <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-[#243056] py-1 shadow-lg ring-1 ring-black/5">
+                {userNavigation.map((item) => (
+                  <MenuItem key={item.name}>
+                    {() =>
+                      item.onClick ? (
+                        <button
+                          onClick={item.onClick}
+                          className="block w-full text-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-100"
+                        >
+                          {item.name}
+                        </button>
+                      ) : (
+                        <a href={item.href} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-100">
+                          {item.name}
+                        </a>
+                      )
+                    }
+                  </MenuItem>
+                ))}
+              </MenuItems>
+            </Menu>
+          )}
         </div>
       </PopoverPanel>
     </Popover>
