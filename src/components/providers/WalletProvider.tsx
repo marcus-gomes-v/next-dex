@@ -1,4 +1,3 @@
-// src/components/providers/WalletProvider.tsx
 "use client";
 
 import { useConnect, useAccount, useDisconnect } from "wagmi";
@@ -17,17 +16,23 @@ const WalletContext = createContext<WalletContextType | undefined>(undefined);
 export function WalletProvider({ children }: { children: ReactNode }) {
   const { address, isConnected } = useAccount();
   const { connect } = useConnect({
-    connector: new MetaMaskConnector(),
+    connector: new MetaMaskConnector({
+      options: {
+        shimDisconnect: true, // Ensures MetaMask disconnect behavior is consistent
+      },
+    }),
   });
   const { disconnect } = useDisconnect();
 
   return (
-    <WalletContext.Provider value={{
-      address: address ?? '',
-      isConnected,
-      connect: () => connect(),
-      disconnect
-    }}>
+    <WalletContext.Provider
+      value={{
+        address: address ?? "",
+        isConnected,
+        connect: () => connect(),
+        disconnect,
+      }}
+    >
       {children}
     </WalletContext.Provider>
   );
