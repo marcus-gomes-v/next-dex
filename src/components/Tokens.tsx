@@ -20,6 +20,8 @@ export default function Tokens({
   address: string;
   isConnected: boolean;
 }) {
+  console.log(address, isConnected);
+
   const [tokens, setTokens] = useState<Token[]>([]);
   const [loading, setLoading] = useState(true);
 
