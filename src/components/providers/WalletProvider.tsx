@@ -18,7 +18,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const { connect } = useConnect({
     connector: new MetaMaskConnector({
       options: {
-        shimDisconnect: true, // Ensures MetaMask disconnect behavior is consistent
+        shimDisconnect: true, // Ensure consistent disconnect behavior
       },
     }),
   });
@@ -27,7 +27,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   return (
     <WalletContext.Provider
       value={{
-        address: address ?? "",
+        address: address || "",
         isConnected,
         connect: () => connect(),
         disconnect,

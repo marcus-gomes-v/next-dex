@@ -21,6 +21,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@web3-react/core": "^8.2.3",
+    "@web3-react/metamask": "^8.2.4",
     "antd": "^5.22.7",
     "axios": "^1.2.3",
     "lucide-react": "^0.469.0",
