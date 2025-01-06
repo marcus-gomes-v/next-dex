@@ -54,10 +54,10 @@ export default function Tokens({
           </p>
         </div>
       </div>
-      <div className="mt-8 flow-root px-4 sm:px-6 lg:px-8 bg-[#0E111B]">
+      <div className="mt-8 flow-root px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-orange-900 to-orange-700 rounded-xl">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
-            <table className="min-w-full divide-y divide-gray-700">
+            <table className="min-w-full divide-y divide-orange-700">
               <thead>
                 <tr>
                   <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-300">Token</th>
@@ -67,7 +67,7 @@ export default function Tokens({
                   <th className="px-3 py-3.5 text-right text-sm font-semibold text-gray-300 hidden sm:table-cell">Liquidity</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className="divide-y divide-orange-700">
                 {tokens.map((token) => (
                   <tr key={token.address} className="hover:bg-gray-800/50">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm">

@@ -243,21 +243,21 @@ function Swap(props: { address: string; isConnected: boolean; }) {
     py-5
     px-6
     rounded-xl
-    bg-[#3a4157]
+    bg-orange-900
     text-white
     outline
     outline-1
     -outline-offset-1
-    outline-[#3a4157]
+    outline-orange-800
     placeholder:text-gray-400
     focus:outline
     focus:outline-2
     focus:-outline-offset-2
-    focus:outline-indigo-600
+    focus:outline-orange-300
   `
 
   const classNameSwitch = `
-    bg-[#3a4157]
+    bg-gray-800
     w-[25px]
     h-[25px]
     items-center
@@ -267,8 +267,8 @@ function Swap(props: { address: string; isConnected: boolean; }) {
     absolute
     top-[76px]
     left-[130px]
-    text-[#5F6783]
-    border-[#0E111B]
+    text-orange-500
+    border-gray-800
     border-solid
     border-[3px]
     font-[12px]
@@ -281,7 +281,8 @@ function Swap(props: { address: string; isConnected: boolean; }) {
     absolute
     min-w-[50px]
     h-[30px]
-    bg-[#3a4157]
+    p-2
+    bg-orange-800
     right-[20px]
     rounded-[100px]
     flex
@@ -313,23 +314,24 @@ function Swap(props: { address: string; isConnected: boolean; }) {
     flex 
     justify-center 
     items-center 
-    bg-[#243056] 
+    bg-orange-700
     w-full 
     h-[55px] 
     text-[20px] 
     rounded-[12px] 
-    text-[#5981F3] 
+    text-gray-200
     font-bold 
     transition 
     duration-300 
     mb-[30px] 
     mt-[8px] 
     hover:cursor-pointer 
-    hover:bg-[#3b4874] 
+    hover:bg-orange-600 
+    hover:text-gray-800
     disabled:opacity-40 
     disabled:cursor-not-allowed 
-    disabled:bg-[#243056] 
-    disabled:text-[#5982f39b]
+    disabled:bg-orange-800
+    disabled:text-gray-300
   `
 
   return (
@@ -370,7 +372,7 @@ function Swap(props: { address: string; isConnected: boolean; }) {
       </Modal>
       <div className="
         w-[1000px]
-        bg-[#0E111B]
+        bg-gradient-to-br from-orange-600 via-orange-800 to-orange-300
         border-[#21273a]
         border-solid
         border-6
@@ -384,14 +386,14 @@ function Swap(props: { address: string; isConnected: boolean; }) {
         px-[30px]
         ">
         <div className="flex justify-between items-center w-full">
-          <h4 className="text-lg">Swap</h4>
+          <h4 className="text-lg text-white font-extrabold">Swap</h4>
           <Popover
             content={settings}
             title="Settings"
             trigger="click"
             placement="bottomRight"
           >
-            <FontAwesomeIcon icon={faCog} className="text-[#747b92] hover:text-white transition-all cursor-pointer" />
+            <FontAwesomeIcon icon={faCog} className="text-orange-300 hover:text-white transition-all cursor-pointer" />
           </Popover>
         </div>
         <div className='flex flex-col  md:flex-row  gap-4 w-full'>

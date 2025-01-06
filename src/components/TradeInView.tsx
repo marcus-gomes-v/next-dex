@@ -14,9 +14,8 @@ const TradingViewWidget = ({ tokenOne, tokenTwo }: {
 }) => {
   const container = useRef<HTMLDivElement>(null);
 
-  console.log(tokenTwo);
-
   useEffect(() => {
+    console.log(`${tokenOne.ticker}${tokenTwo.ticker}`)
     const script = document.createElement('script');
     script.src = 'https://s3.tradingview.com/tv.js';
     script.async = true;
@@ -27,19 +26,19 @@ const TradingViewWidget = ({ tokenOne, tokenTwo }: {
         }
         new window.TradingView.widget({
           container_id: 'tv-widget',
-          symbol: `CRYPTO:${tokenOne.ticker}USD`,
-          interval: 'D',
+          symbol: `${tokenOne.ticker}USD`,
+          interval: '1W',
           timezone: 'Etc/UTC',
           theme: 'dark',
-          style: '1',
+          style: '2',
           locale: 'en',
           toolbar_bg: '#0E111B',
-          enable_publishing: false,
+          enable_publishing: true,
           hide_side_toolbar: true,
           hide_legend: true,
           hidevolume: true,
           hide_top_toolbar: true,
-          allow_symbol_change: false,
+          allow_symbol_change: true,
           backgroundColor: '#0E111B',
           studies: [],
           height: 250,

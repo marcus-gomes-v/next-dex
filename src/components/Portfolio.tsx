@@ -60,10 +60,10 @@ export default function Portfolio({ address, isConnected }: { address: string; i
           </p>
         </div>
       </div>
-      <div className="mt-8 flow-root px-4 sm:px-6 lg:px-8 bg-[#0E111B]">
+      <div className="mt-8 flow-root px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-orange-900 to-orange-700 rounded-xl">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <table className="min-w-full divide-y divide-gray-700">
+            <table className="min-w-full divide-y divide-orange-700">
               <thead>
                 <tr>
                   <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-300 sm:pl-0">
@@ -80,7 +80,7 @@ export default function Portfolio({ address, isConnected }: { address: string; i
                   </th> */}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className="divide-y divide-orange-700">
                 {tokens.map((token) => (
                   <tr key={token.token_address} className="hover:bg-gray-800/50">
                     <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
@@ -96,7 +96,7 @@ export default function Portfolio({ address, isConnected }: { address: string; i
                         </div>
                         <div className="ml-4">
                           <div className="font-medium text-white">{token.symbol}</div>
-                          <div className="mt-1 text-gray-400">{token.name}</div>
+                          <div className="mt-1 text-gray-200">{token.name}</div>
                         </div>
                       </div>
                     </td>

@@ -34,7 +34,7 @@ function Header() {
           <div className="hidden lg:flex lg:items-center lg:justify-center xl:col-span-6">
             <div className="flex space-x-4">
               {links.map((link, i) => (
-                <Link key={i} href={link.href} className="link">
+                <Link key={i} href={link.href} className="link hover:text-orange-500 transition-colors duration-200">
                   <p>{link.name}</p>
                 </Link>
               ))}
@@ -50,29 +50,29 @@ function Header() {
 
             {!isConnected ? (
               <div
-                className="ml-2 inline-flex items-center rounded-md bg-indigo-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer"
+                className="ml-2 inline-flex items-center rounded-md bg-orange-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 cursor-pointer"
                 onClick={connect}
               >
                 Connect Wallet
               </div>
             ) : (
               <Menu as="div" className="relative ml-5 shrink-0">
-                <MenuButton className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer">
+                <MenuButton className="inline-flex items-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 cursor-pointer">
                   {`${address.slice(0, 4)}...${address.slice(-4)}`}
                 </MenuButton>
-                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-[#243056] py-1 shadow-lg ring-1 ring-black/5">
+                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-orange-800 py-1 shadow-lg ring-1 ring-black/5">
                   {userNavigation.map((item) => (
                     <MenuItem key={item.name}>
                       {() =>
                         item.onClick ? (
                           <button
                             onClick={item.onClick}
-                            className="block w-full text-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-100"
+                            className="block w-full text-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-100 hover:text-gray-800"
                           >
                             {item.name}
                           </button>
                         ) : (
-                          <a href={item.href} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-100">
+                          <a href={item.href} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-100 hover:text-gray-800">
                             {item.name}
                           </a>
                         )
@@ -86,7 +86,7 @@ function Header() {
 
           {/* Mobile Hamburger Menu */}
           <div className="flex items-center lg:hidden">
-            <PopoverButton className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            <PopoverButton className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500">
               <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
             </PopoverButton>
           </div>
@@ -94,7 +94,7 @@ function Header() {
       </div>
 
       {/* Mobile Navigation */}
-      <PopoverPanel className="lg:hidden bg-[#243056] shadow-md">
+      <PopoverPanel className="lg:hidden bg-orange-800 shadow-md">
         <div className="px-4 py-3 space-y-1">
           {links.map((link) => (
             <Popover.Button
@@ -109,29 +109,29 @@ function Header() {
           <div className="px-3 py-2">
             {!isConnected ? (
               <div
-                className="inline-flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer"
+                className="inline-flex w-full justify-center items-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 cursor-pointer"
                 onClick={connect}
               >
                 Connect Wallet
               </div>
             ) : (
               <Menu as="div" className="relative w-full">
-                <MenuButton className="w-full text-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer">
+                <MenuButton className="w-full text-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 cursor-pointer">
                   {`${address.slice(0, 4)}...${address.slice(-4)}`}
                 </MenuButton>
-                <MenuItems className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#243056] py-1 shadow-lg ring-1 ring-black/5">
+                <MenuItems className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-orange-800 py-1 shadow-lg ring-1 ring-black/5">
                   {userNavigation.map((item) => (
                     <MenuItem key={item.name}>
                       {() =>
                         item.onClick ? (
                           <button
                             onClick={item.onClick}
-                            className="block w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-100"
+                            className="block w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-100 hover:text-gray-800"
                           >
                             {item.name}
                           </button>
                         ) : (
-                          <a href={item.href} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-100">
+                          <a href={item.href} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-100 hover:text-gray-800">
                             {item.name}
                           </a>
                         )
