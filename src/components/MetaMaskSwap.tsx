@@ -186,7 +186,7 @@ function Swap(props: { address: string; isConnected: boolean; }) {
       }
 
       const swapTxHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
+        method: "eth_sendTransaction" as any,
         params: [swapTx],
       });
 
@@ -195,9 +195,9 @@ function Swap(props: { address: string; isConnected: boolean; }) {
       // Wait for transaction to be mined
       await new Promise((resolve) => {
         const checkReceipt = setInterval(async () => {
-          const receipt = await window.ethereum.request({
-            method: "eth_getTransactionReceipt",
-            params: [swapTxHash],
+          const receipt = await window.ethereum?.request({
+            method: "eth_getTransactionReceipt" as any,
+            params: [swapTxHash as any],
           });
           if (receipt) {
             clearInterval(checkReceipt);

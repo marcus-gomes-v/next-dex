@@ -27,7 +27,7 @@ export function NetworkProvider({ children }: { children: ReactNode }) {
       });
 
       // Listen for network changes
-      window.ethereum.on('chainChanged', (chainId: string) => {
+      window.ethereum?.on?.('chainChanged', (chainId: string) => {
         const network = Object.values(NETWORKS).find(n => n.chainId === chainId);
         if (network) {
           setSelectedNetwork(network);

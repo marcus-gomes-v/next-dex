@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,34 +35,34 @@ function Header() {
         params: [{ chainId: network.chainId }],
       });
       setSelectedNetwork(network); // This will now update the global network state
-    } catch (error: any) {
-      if (error.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: network.chainId,
-                rpcUrls: [network.rpcUrl],
-                chainName: network.name,
-                nativeCurrency: {
-                  name: "Ethereum",
-                  symbol: "ETH",
-                  decimals: 18
-                },
-                blockExplorerUrls: [network.explorerUrl]
-              },
-            ],
-          });
-          setSelectedNetwork(network); // Update global network state
-        } catch (addError) {
-          console.error('Error adding network:', addError);
-          messageApi.error('Failed to add network');
-        }
-      } else {
+    } catch (error: unknown) {
+      // if (error.code === 4902) {
+      //   try {
+      //     await window.ethereum.request({
+      //       method: 'wallet_addEthereumChain',
+      //       params: [
+      //         {
+      //           chainId: network.chainId,
+      //           rpcUrls: [network.rpcUrl],
+      //           chainName: network.name,
+      //           nativeCurrency: {
+      //             name: "Ethereum",
+      //             symbol: "ETH",
+      //             decimals: 18
+      //           },
+      //           blockExplorerUrls: [network.explorerUrl]
+      //         },
+      //       ],
+      //     });
+      //     setSelectedNetwork(network); // Update global network state
+      //   } catch (addError) {
+      //     console.error('Error adding network:', addError);
+      //     messageApi.error('Failed to add network');
+      //   }
+      // } else {
         console.error('Error switching network:', error);
         messageApi.error('Failed to switch network');
-      }
+      // }
     }
   };
 

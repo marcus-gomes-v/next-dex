@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import '@ant-design/v5-patch-for-react-19';
 import { Popover, Radio, Modal, message, RadioChangeEvent } from "antd";
 import tokenList from "../tokenList.json";
