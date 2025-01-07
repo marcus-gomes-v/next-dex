@@ -112,58 +112,87 @@ function Swap(props: { address: string; isConnected: boolean; }) {
         return;
       }
 
-      const allowanceConfig = {
-        method: 'post',
-        url: '/api/1inch/allowance',
-        headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify({
-          "token": tokenOne.address,
-          "wallet": address
-        })
-      };
+      // Clear any existing transaction details
+      setTxDetails({
+        to: null,
+        data: null,
+        value: null,
+      });
 
-      const allowance = await axios.request(allowanceConfig);
+      // Check allowance first
+      const allowanceResponse = await axios.post('/api/1inch/allowance', {
+        token: tokenOne.address,
+        wallet: address
+      });
 
-      if (allowance.data.data.allowance === "0") {
-        const transactionConfig = {
-          ...allowanceConfig,
-          url: '/api/1inch/transaction',
-          data: JSON.stringify({
-            "token": tokenOne.address,
-            "amount": amount
-          })
-        };
-        const approve = await axios.request(transactionConfig);
-        setTxDetails(approve.data.data);
-        return;
+      const currentAllowance = allowanceResponse.data.data.allowance;
+      const requiredAmount = amount.padEnd(tokenOne.decimals + amount.length, '0');
+
+      // Only request approval if current allowance is insufficient
+      if (BigInt(currentAllowance) < BigInt(requiredAmount)) {
+        messageApi.info('Requesting token approval...');
+        
+        // Get approval transaction
+        const approveResponse = await axios.post('/api/1inch/transaction', {
+          token: tokenOne.address,
+          amount: requiredAmount
+        });
+
+        // Set approval transaction details
+        setTxDetails(approveResponse.data.data);
+        
+        // Wait for approval transaction
+        await new Promise((resolve, reject) => {
+          const checkInterval = setInterval(() => {
+            if (!txDetails.to) {
+              clearInterval(checkInterval);
+              resolve(true);
+            }
+          }, 1000);
+
+          // Timeout after 5 minutes
+          setTimeout(() => {
+            clearInterval(checkInterval);
+            reject(new Error('Approval timeout'));
+          }, 300000);
+        });
+
+        // Clear transaction details after approval
+        setTxDetails({
+          to: null,
+          data: null,
+          value: null,
+        });
       }
 
-      const swapConfig = {
-        method: 'post',
-        url: '/api/1inch/swap',
-        headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify({
-          fromTokenAddress: tokenOne.address,
-          toTokenAddress: tokenTwo.address,
-          amount: amount.padEnd(tokenOne.decimals + amount.length, '0'),
-          fromAddress: address,
-          slippage: slippage
-        })
-      };
+      messageApi.info('Preparing swap transaction...');
 
-      const tx = await axios.request(swapConfig);
+      // Proceed with swap
+      const swapResponse = await axios.post('/api/1inch/swap', {
+        fromTokenAddress: tokenOne.address,
+        toTokenAddress: tokenTwo.address,
+        amount: requiredAmount,
+        fromAddress: address,
+        slippage
+      });
+
       const decimals = Number(`1E${tokenTwo.decimals}`);
-      setTokenTwoAmount((Number(tx.data.data.toTokenAmount) / decimals).toFixed(2));
-      setTxDetails(tx.data.data.tx);
+      setTokenTwoAmount((Number(swapResponse.data.data.toTokenAmount) / decimals).toFixed(2));
+      setTxDetails(swapResponse.data.data.tx);
+
     } catch (error) {
       console.error('Swap error:', error);
       messageApi.error('Failed to process swap');
+      setTxDetails({
+        to: null,
+        data: null,
+        value: null,
+      });
     } finally {
       setIsSwapLoading(false);
     }
   }
-
-
+  
   useEffect(()=>{
 
     fetchPrices(tokenList[0].address, tokenList[1].address)

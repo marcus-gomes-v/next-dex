@@ -1,16 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useWallet } from "./providers/WalletProvider";
+import { NETWORKS } from '@/config/networkConfig';
+import { message } from 'antd';
+import { useNetwork } from "./providers/NetworkProvider";
 
 function Header() {
   const { address, isConnected, connect, disconnect } = useWallet();
-
+  const { selectedNetwork, setSelectedNetwork } = useNetwork(); // Use context instead of local state
+  const [messageApi, contextHolder] = message.useMessage();
+  
   const userNavigation = [
     { name: "Sign out", href: "#", onClick: () => disconnect() },
   ];
@@ -21,8 +26,49 @@ function Header() {
     { name: "Portfolio", href: "/portfolio" },
   ];
 
+  const switchNetwork = async (network: typeof NETWORKS.MAINNET) => {
+    if (!window.ethereum) return;
+
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: network.chainId }],
+      });
+      setSelectedNetwork(network); // This will now update the global network state
+    } catch (error: any) {
+      if (error.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: network.chainId,
+                rpcUrls: [network.rpcUrl],
+                chainName: network.name,
+                nativeCurrency: {
+                  name: "Ethereum",
+                  symbol: "ETH",
+                  decimals: 18
+                },
+                blockExplorerUrls: [network.explorerUrl]
+              },
+            ],
+          });
+          setSelectedNetwork(network); // Update global network state
+        } catch (addError) {
+          console.error('Error adding network:', addError);
+          messageApi.error('Failed to add network');
+        }
+      } else {
+        console.error('Error switching network:', error);
+        messageApi.error('Failed to switch network');
+      }
+    }
+  };
+
   return (
     <Popover as="header" className="shadow-sm">
+      {contextHolder}
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-10 py-5">
         <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
           {/* Logo */}
@@ -43,11 +89,33 @@ function Header() {
 
           {/* User and Connect Wallet */}
           <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-            <button type="button" className="flex gap-2">
-              <Image src={"eth.svg"} alt="eth" width={24} height={24} />
-              Ethereum
-            </button>
+            {/* Network Selection Dropdown */}
+            <Menu as="div" className="relative">
+              <MenuButton className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+                <Image src={selectedNetwork.icon} alt={selectedNetwork.name} width={24} height={24} />
+                <span>{selectedNetwork.name}</span>
+                <FontAwesomeIcon icon={faAngleDown} className="ml-1" />
+              </MenuButton>
+              <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-orange-800 py-1 shadow-lg ring-1 ring-black/5">
+                {Object.values(NETWORKS).map((network) => (
+                  <MenuItem key={network.chainId}>
+                    {({focus}) => (
+                      <button
+                        onClick={() => switchNetwork(network)}
+                        className={`${
+                          focus ? 'bg-gray-100 text-gray-800' : 'text-gray-300'
+                        } flex w-full items-center px-4 py-2 text-sm`}
+                      >
+                        <Image src={network.icon} alt={network.name} width={20} height={20} className="mr-2" />
+                        {network.name}
+                      </button>
+                    )}
+                  </MenuItem>
+                ))}
+              </MenuItems>
+            </Menu>
 
+            {/* Connect/Disconnect Wallet */}
             {!isConnected ? (
               <div
                 className="ml-2 inline-flex items-center rounded-md bg-orange-600 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 cursor-pointer"
@@ -96,6 +164,32 @@ function Header() {
       {/* Mobile Navigation */}
       <PopoverPanel className="lg:hidden bg-orange-800 shadow-md">
         <div className="px-4 py-3 space-y-1">
+          {/* Network Selection for Mobile */}
+          <Menu as="div" className="relative w-full mb-2">
+            <MenuButton className="w-full flex items-center justify-center gap-2 rounded-md bg-orange-700 px-3 py-2 text-sm font-semibold text-white">
+              <Image src={selectedNetwork.icon} alt={selectedNetwork.name} width={20} height={20} />
+              <span>{selectedNetwork.name}</span>
+              <FontAwesomeIcon icon={faAngleDown} />
+            </MenuButton>
+            <MenuItems className="absolute left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-orange-800 py-1 shadow-lg ring-1 ring-black/5">
+              {Object.values(NETWORKS).map((network) => (
+                <MenuItem key={network.chainId}>
+                  {({ active }) => (
+                    <button
+                      onClick={() => switchNetwork(network)}
+                      className={`${
+                        active ? 'bg-gray-100 text-gray-800' : 'text-gray-300'
+                      } flex w-full items-center px-4 py-2 text-sm`}
+                    >
+                      <Image src={network.icon} alt={network.name} width={20} height={20} className="mr-2" />
+                      {network.name}
+                    </button>
+                  )}
+                </MenuItem>
+              ))}
+            </MenuItems>
+          </Menu>
+
           {links.map((link) => (
             <Popover.Button
               key={link.name}

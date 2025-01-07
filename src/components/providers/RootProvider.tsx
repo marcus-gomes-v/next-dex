@@ -3,6 +3,7 @@
 import { WagmiConfig } from "wagmi";
 import { getWagmiConfig } from "@/lib/wagmi";
 import { WalletProvider } from "./WalletProvider";
+import { NetworkProvider } from "./NetworkProvider";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 
@@ -24,14 +25,16 @@ export default function RootProvider({
 
   return (
     <WagmiConfig client={wagmiConfig}>
-      <WalletProvider>
-        <div className="text-center">
-          <Header />
-          <div className="mt-[40px] flex justify-center">
-            {children}
+      <NetworkProvider>
+        <WalletProvider>
+          <div className="text-center">
+            <Header />
+            <div className="mt-[40px] flex justify-center">
+              {children}
+            </div>
           </div>
-        </div>
-      </WalletProvider>
+        </WalletProvider>
+      </NetworkProvider>
     </WagmiConfig>
   );
 }
